@@ -1,0 +1,3 @@
+/home/tikualdo/Documentos/ULL/2do_año/Redes/P03/build/CMakeFiles/OUT.dir
+/home/tikualdo/Documentos/ULL/2do_año/Redes/P03/build/CMakeFiles/edit_cache.dir
+/home/tikualdo/Documentos/ULL/2do_año/Redes/P03/build/CMakeFiles/rebuild_cache.dir
