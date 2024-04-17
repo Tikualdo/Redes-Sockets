@@ -18,7 +18,9 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 
 # Lista de archivos fuente
 set(SOURCES
-    src/main.cpp)
+    src/ClientConnection.cpp
+    src/ftp_server.cpp
+    src/FTPServer.cpp)
 
 # Agregar el ejecutable
 add_executable(OUT ${SOURCES})
