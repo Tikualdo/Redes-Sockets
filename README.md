@@ -17,5 +17,3 @@ on your system:
 - make
 
 To compile the code use the make command.
-
-1

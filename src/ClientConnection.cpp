@@ -95,7 +95,7 @@ void ClientConnection::stop() {
 
 
     
-#define COMMAND(cmd) strcmp(command, cmd)==0
+#define COMMAND(cmd) strcmp(command, cmd) == 0
 
 // This method processes the requests.
 // Here you should implement the actions related to the FTP commands.
