@@ -1,6 +1,10 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/OUT.dir/src/main.cpp.o"
-  "CMakeFiles/OUT.dir/src/main.cpp.o.d"
+  "CMakeFiles/OUT.dir/src/ClientConnection.cpp.o"
+  "CMakeFiles/OUT.dir/src/ClientConnection.cpp.o.d"
+  "CMakeFiles/OUT.dir/src/FTPServer.cpp.o"
+  "CMakeFiles/OUT.dir/src/FTPServer.cpp.o.d"
+  "CMakeFiles/OUT.dir/src/ftp_server.cpp.o"
+  "CMakeFiles/OUT.dir/src/ftp_server.cpp.o.d"
   "OUT"
   "OUT.pdb"
 )

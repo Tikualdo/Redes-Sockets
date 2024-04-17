@@ -129,29 +129,77 @@ OUT/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/OUT.dir/build.make CMakeFiles/OUT.dir/build
 .PHONY : OUT/fast
 
-src/main.o: src/main.cpp.o
-.PHONY : src/main.o
+src/ClientConnection.o: src/ClientConnection.cpp.o
+.PHONY : src/ClientConnection.o
 
 # target to build an object file
-src/main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/OUT.dir/build.make CMakeFiles/OUT.dir/src/main.cpp.o
-.PHONY : src/main.cpp.o
+src/ClientConnection.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OUT.dir/build.make CMakeFiles/OUT.dir/src/ClientConnection.cpp.o
+.PHONY : src/ClientConnection.cpp.o
 
-src/main.i: src/main.cpp.i
-.PHONY : src/main.i
+src/ClientConnection.i: src/ClientConnection.cpp.i
+.PHONY : src/ClientConnection.i
 
 # target to preprocess a source file
-src/main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/OUT.dir/build.make CMakeFiles/OUT.dir/src/main.cpp.i
-.PHONY : src/main.cpp.i
+src/ClientConnection.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OUT.dir/build.make CMakeFiles/OUT.dir/src/ClientConnection.cpp.i
+.PHONY : src/ClientConnection.cpp.i
 
-src/main.s: src/main.cpp.s
-.PHONY : src/main.s
+src/ClientConnection.s: src/ClientConnection.cpp.s
+.PHONY : src/ClientConnection.s
 
 # target to generate assembly for a file
-src/main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/OUT.dir/build.make CMakeFiles/OUT.dir/src/main.cpp.s
-.PHONY : src/main.cpp.s
+src/ClientConnection.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OUT.dir/build.make CMakeFiles/OUT.dir/src/ClientConnection.cpp.s
+.PHONY : src/ClientConnection.cpp.s
+
+src/FTPServer.o: src/FTPServer.cpp.o
+.PHONY : src/FTPServer.o
+
+# target to build an object file
+src/FTPServer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OUT.dir/build.make CMakeFiles/OUT.dir/src/FTPServer.cpp.o
+.PHONY : src/FTPServer.cpp.o
+
+src/FTPServer.i: src/FTPServer.cpp.i
+.PHONY : src/FTPServer.i
+
+# target to preprocess a source file
+src/FTPServer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OUT.dir/build.make CMakeFiles/OUT.dir/src/FTPServer.cpp.i
+.PHONY : src/FTPServer.cpp.i
+
+src/FTPServer.s: src/FTPServer.cpp.s
+.PHONY : src/FTPServer.s
+
+# target to generate assembly for a file
+src/FTPServer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OUT.dir/build.make CMakeFiles/OUT.dir/src/FTPServer.cpp.s
+.PHONY : src/FTPServer.cpp.s
+
+src/ftp_server.o: src/ftp_server.cpp.o
+.PHONY : src/ftp_server.o
+
+# target to build an object file
+src/ftp_server.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OUT.dir/build.make CMakeFiles/OUT.dir/src/ftp_server.cpp.o
+.PHONY : src/ftp_server.cpp.o
+
+src/ftp_server.i: src/ftp_server.cpp.i
+.PHONY : src/ftp_server.i
+
+# target to preprocess a source file
+src/ftp_server.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OUT.dir/build.make CMakeFiles/OUT.dir/src/ftp_server.cpp.i
+.PHONY : src/ftp_server.cpp.i
+
+src/ftp_server.s: src/ftp_server.cpp.s
+.PHONY : src/ftp_server.s
+
+# target to generate assembly for a file
+src/ftp_server.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OUT.dir/build.make CMakeFiles/OUT.dir/src/ftp_server.cpp.s
+.PHONY : src/ftp_server.cpp.s
 
 # Help Target
 help:
@@ -162,9 +210,15 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... OUT"
-	@echo "... src/main.o"
-	@echo "... src/main.i"
-	@echo "... src/main.s"
+	@echo "... src/ClientConnection.o"
+	@echo "... src/ClientConnection.i"
+	@echo "... src/ClientConnection.s"
+	@echo "... src/FTPServer.o"
+	@echo "... src/FTPServer.i"
+	@echo "... src/FTPServer.s"
+	@echo "... src/ftp_server.o"
+	@echo "... src/ftp_server.i"
+	@echo "... src/ftp_server.s"
 .PHONY : help
 
 

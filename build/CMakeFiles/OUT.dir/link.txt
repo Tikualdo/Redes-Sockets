@@ -1,1 +1,1 @@
-/usr/bin/c++ -rdynamic CMakeFiles/OUT.dir/src/main.cpp.o -o OUT 
+/usr/bin/c++ -rdynamic CMakeFiles/OUT.dir/src/ClientConnection.cpp.o CMakeFiles/OUT.dir/src/ftp_server.cpp.o CMakeFiles/OUT.dir/src/FTPServer.cpp.o -o OUT 

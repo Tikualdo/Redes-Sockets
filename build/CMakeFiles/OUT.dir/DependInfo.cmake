@@ -8,7 +8,9 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/tikualdo/Documentos/ULL/2do_año/Redes/P03/src/main.cpp" "CMakeFiles/OUT.dir/src/main.cpp.o" "gcc" "CMakeFiles/OUT.dir/src/main.cpp.o.d"
+  "/home/tikualdo/Documentos/ULL/2do_año/Redes/P03/src/ClientConnection.cpp" "CMakeFiles/OUT.dir/src/ClientConnection.cpp.o" "gcc" "CMakeFiles/OUT.dir/src/ClientConnection.cpp.o.d"
+  "/home/tikualdo/Documentos/ULL/2do_año/Redes/P03/src/FTPServer.cpp" "CMakeFiles/OUT.dir/src/FTPServer.cpp.o" "gcc" "CMakeFiles/OUT.dir/src/FTPServer.cpp.o.d"
+  "/home/tikualdo/Documentos/ULL/2do_año/Redes/P03/src/ftp_server.cpp" "CMakeFiles/OUT.dir/src/ftp_server.cpp.o" "gcc" "CMakeFiles/OUT.dir/src/ftp_server.cpp.o.d"
   )
 
 # Targets to which this target links.
