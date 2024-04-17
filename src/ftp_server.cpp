@@ -18,15 +18,11 @@ void exit_handler() {
 
 
 int main(int argc, char **argv) {
-
-  
-  
-    struct sigaction action;
-    action.sa_sigaction = sighandler;
-    action.sa_flags = SA_SIGINFO;
-      sigaction(SIGINT, &action , NULL);
-    server = new FTPServer(2121);
-      atexit(exit_handler);
-    server->run();
-
+  struct sigaction action;
+  action.sa_sigaction = sighandler;
+  action.sa_flags = SA_SIGINFO;
+    sigaction(SIGINT, &action , NULL);
+  server = new FTPServer(2121);
+    atexit(exit_handler);
+  server->run();
 }
