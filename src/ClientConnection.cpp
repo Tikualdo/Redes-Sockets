@@ -114,30 +114,41 @@ void ClientConnection::WaitForRequests() {
       }
     }
     else if (COMMAND("PORT")) {
-      // To be implemented by students
+      fscanf(fd, "%s", arg);
+      int i1, i2, i3, i4, p5, p6;
+      sscanf(arg, "%d,%d,%d,%d,%d,%d", &i1, &i2, &i3, &i4, &p5, &p6);
+      uint32_t address = (i1 << 24) | (i2 << 16) | (i3 << 8) | i4;
+      uint16_t port = (p5 << 8) | p6;
+
+      data_socket = connect_TCP(address, port);
+      if (data_socket == -1) {
+        fprintf(fd, "425 Can't open data connection.\n");
+      } else {
+        fprintf(fd, "200 PORT command successful.\n");
+      }
     }
     else if (COMMAND("PASV")) {
-      // To be implemented by students
+      struct sockaddr_in fsin;
+      socklen_t slen = sizeof(fsin);
     }
     else if(COMMAND("STOR") ) {
       fscanf(fd, "%s", arg);
-      fd = fopen(arg, "w");
-      if(fd == NULL) {
+      FILE* file = fopen(arg, "w");
+      if(file == NULL) {
         fprintf(fd, "550 File not found.\n");
       }
       char buffer[MAX_BUFF];
-      int socket_fd = fileno(fd);
+      fprintf(fd, "150 File status okay; about to open data connection.\n");
       while(true) {
-        fprintf(fd, "150 File status okay; about to open data connection.\n");
-        int recv_data = recv(socket_fd, buffer, MAX_BUFF, 0);
-        fwrite(buffer, 1, recv_data, fd);
+        int recv_data = recv(data_socket, buffer, MAX_BUFF, 0);
+        fwrite(buffer, 1, recv_data, file);
         if(recv_data == 0) {
           break;
         }
-      fprintf(fd, "226 Transfer complete.\n");
-      fclose(fd);
-      close(socket_fd);
       }
+      fprintf(fd, "226 Transfer complete.\n");
+      fclose(file);
+      close(data_socket);
     }
     else if (COMMAND("RETR")) {
       fscanf(fd, "%s", arg);
@@ -149,11 +160,22 @@ void ClientConnection::WaitForRequests() {
           char buffer[MAX_BUFF];
           size_t bytes_read = fread(buffer, 1, MAX_BUFF, fd);
           send(data_socket, buffer, bytes_read, 0);
+          if(bytes_read < MAX_BUFF) {
+            break;
+          }
         }
       }
     }
     else if (COMMAND("LIST")) {
-      // To be implemented by students	
+      DIR *dir = opendir(" ");	
+      struct dirent *e;
+      fprintf(fd, "150 Here comes the directory listing.\n");
+      while( e = readdir(dir)) {
+        send(data_socket, e->d_name, strlen(e->d_name), 0);
+      }
+      fprintf(fd, "226 Directory send OK.\n");
+      closedir(dir);
+      close(data_socket);
     }
     else if (COMMAND("SYST")) {
       fprintf(fd, "215 UNIX Type: L8.\n");   

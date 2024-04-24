@@ -31,10 +31,35 @@
 
 
 int define_socket_TCP(int port) {
-  // Include the code for defining the socket.
 
+  int fd_socket;
+  struct sockaddr_in serv_addr;
 
-  return -1;
+  fd_socket = socket(AF_INET, SOCK_STREAM, 0);
+  if (fd_socket < 0) {
+    perror("ERROR opening socket");
+    return -1;
+  }
+
+  // Inicializar serv_addr a cero
+  bzero((char *) &serv_addr, sizeof(serv_addr));
+
+  // Configurar serv_addr
+  serv_addr.sin_family = AF_INET;
+  serv_addr.sin_addr.s_addr = INADDR_ANY;
+  serv_addr.sin_port = htons(port);
+
+  // Vincular el socket a la dirección y puerto especificados
+  if (bind(fd_socket, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
+    perror("ERROR on binding");
+    close(fd_socket);
+    return -1;
+  }
+
+  // Escuchar conexiones entrantes
+  listen(fd_socket, 5);
+
+  return fd_socket;
 }
 
 /**
