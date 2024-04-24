@@ -17,6 +17,7 @@
 
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <sys/stat.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <pwd.h>
@@ -26,8 +27,7 @@
 #include <langinfo.h>
 #include <fcntl.h>
 #include <unistd.h>
-
-#include <sys/stat.h> 
+ 
 #include <iostream>
 #include <dirent.h>
 
@@ -119,11 +119,38 @@ void ClientConnection::WaitForRequests() {
     else if (COMMAND("PASV")) {
       // To be implemented by students
     }
-    else if (COMMAND("STOR") ) {
-      // To be implemented by students
+    else if(COMMAND("STOR") ) {
+      fscanf(fd, "%s", arg);
+      fd = fopen(arg, "w");
+      if(fd == NULL) {
+        fprintf(fd, "550 File not found.\n");
+      }
+      char buffer[MAX_BUFF];
+      int socket_fd = fileno(fd);
+      while(true) {
+        fprintf(fd, "150 File status okay; about to open data connection.\n");
+        int recv_data = recv(socket_fd, buffer, MAX_BUFF, 0);
+        fwrite(buffer, 1, recv_data, fd);
+        if(recv_data == 0) {
+          break;
+        }
+      fprintf(fd, "226 Transfer complete.\n");
+      fclose(fd);
+      close(socket_fd);
+      }
     }
     else if (COMMAND("RETR")) {
-      // To be implemented by students
+      fscanf(fd, "%s", arg);
+      fd = fopen(arg, "r");
+      if(fd == NULL) {
+        fprintf(fd, "550 File not found.\n");
+      } else {
+        while(true) {
+          char buffer[MAX_BUFF];
+          size_t bytes_read = fread(buffer, 1, MAX_BUFF, fd);
+          send(data_socket, buffer, bytes_read, 0);
+        }
+      }
     }
     else if (COMMAND("LIST")) {
       // To be implemented by students	
