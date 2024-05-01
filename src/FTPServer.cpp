@@ -29,7 +29,9 @@
 #include "../include/FTPServer.h"
 #include "../include/ClientConnection.h"
 
-
+/**
+ * @brief
+*/
 int define_socket_TCP(int port) {
 
   int fd_socket;
@@ -40,24 +42,24 @@ int define_socket_TCP(int port) {
     perror("ERROR opening socket");
     return -1;
   }
+  
+  bzero((char *) &serv_addr, sizeof(serv_addr));      // Inicializar serv_addr a cero
 
-  // Inicializar serv_addr a cero
-  bzero((char *) &serv_addr, sizeof(serv_addr));
-
-  // Configurar serv_addr
   serv_addr.sin_family = AF_INET;
   serv_addr.sin_addr.s_addr = INADDR_ANY;
   serv_addr.sin_port = htons(port);
 
-  // Vincular el socket a la dirección y puerto especificados
   if (bind(fd_socket, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
     perror("ERROR on binding");
     close(fd_socket);
     return -1;
   }
 
-  // Escuchar conexiones entrantes
-  listen(fd_socket, 5);
+  if(listen(fd_socket, 5) < 0) {
+    perror("ERROR on listen");
+    close(fd_socket);
+    return -1;
+  }
 
   return fd_socket;
 }
@@ -73,7 +75,9 @@ void* run_client_connection(void *c) {
 }
 
 
-
+/**
+ * @brief
+*/
 FTPServer::FTPServer(int port) {
   this->port = port;
 }

@@ -2,9 +2,9 @@
 #define FTPServer_H
 
 #include <list>
-
-
 #include "ClientConnection.h"
+
+int define_socket_TCP(int port);
 
 class FTPServer {
 public:

@@ -13,7 +13,7 @@ extern "C" void sighandler(int signal, siginfo_t *info, void *ptr) {
 
 
 void exit_handler() {
-    server->stop();
+  server->stop();
 }
 
 

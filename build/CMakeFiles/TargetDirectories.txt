@@ -1,3 +1,0 @@
-/home/brigafurs/Documentos/coding/Redes-Sockets/build/CMakeFiles/OUT.dir
-/home/brigafurs/Documentos/coding/Redes-Sockets/build/CMakeFiles/edit_cache.dir
-/home/brigafurs/Documentos/coding/Redes-Sockets/build/CMakeFiles/rebuild_cache.dir
