@@ -126,46 +126,68 @@ void ClientConnection::WaitForRequests() {
       }
     }
     else if (COMMAND("PORT")) {
-        int h1,h2,h3,h4,p1,p2;
-        fscanf(fd,"%d,%d,%d,%d,%d,%d",&h1,&h2,&h3,&h4,&p1,&p2);
-        printf("(%d,%d,%d,%d,%d,%d)",h1,h2,h3,h4,p1,p2);
-        uint32_t address = h4 << 24 | h3 << 16 | h2 << 8 | h1;
-        uint16_t port = p1 << 8 | p2;
-        data_socket = connect_TCP(address,port);
-        fprintf(fd, "200 OK\n");
-        fflush(fd);
+      int h1,h2,h3,h4,p1,p2;
+      fscanf(fd,"%d,%d,%d,%d,%d,%d",&h1,&h2,&h3,&h4,&p1,&p2);
+      printf("(%d,%d,%d,%d,%d,%d)",h1,h2,h3,h4,p1,p2);
+      uint32_t address = h4 << 24 | h3 << 16 | h2 << 8 | h1;
+      uint16_t port = p1 << 8 | p2;
+      data_socket = connect_TCP(address,port);
+      fprintf(fd, "200 OK\n");
+      fflush(fd);
     }
     else if (COMMAND("PASV")) {
-      struct sockaddr_in fsin;
-      socklen_t slen = sizeof(fsin);
       int s = define_socket_TCP(0);
-      getsockname(s, (struct sockaddr*)&fsin, &slen);
-      uint16_t port = fsin.sin_port;
-      int p1 = (port >> 8) & 0xff;
-      int p2 = port & 0xff;
-      fprintf(fd, "227 Entering Passive Mode (127,0,0,1,%d,%d)\n", p1, p2);
-
-      slen = sizeof(fsin);
-      data_socket = accept(s, (struct sockaddr*)&fsin, &slen);
+      struct sockaddr_in addr;
+      socklen_t len = sizeof(addr);
+      int Result = getsockname(s, (struct sockaddr*)&addr, &len);
+      uint16_t pp = addr.sin_port;
+      int p1 = pp >> 8;
+      int p2 = pp & 0xFF;
+      if (Result < 0) {
+        fprintf(fd, "421 service not available, closing control connection");
+        fflush(fd);
+        return;
+      }
+      fprintf(fd, "227 Entering in passive mode (127,0,0,1,%d,%d)\n",p2,p1);
+      len = sizeof(addr);
+      fflush(fd);
+      Result = accept(s, (struct sockaddr*)&addr, &len);
+      if(Result < 0) {
+        fprintf(fd, "421 Service not available, closing control connection");
+        fflush(fd);
+        return;
+      }
+      data_socket = Result;
     }
     else if(COMMAND("STOR") ) {
       fscanf(fd, "%s", arg);
-      FILE* file = fopen(arg, "w");
-      if(file == NULL) {
-        fprintf(fd, "550 File not found.\n");
+      fprintf(fd, "150 Estado correcto, abrimos la conexión\n");
+      fflush(fd);
+      FILE *f = fopen(arg, "wb+");
+
+      if (f == NULL){
+        fprintf(fd, "425 No se puede establecer una conexión\n");
+        fflush(fd);
+        close(data_socket);
+        break;
       }
-      char buffer[MAX_BUFF];
-      fprintf(fd, "150 File status okay; about to open data connection.\n");
-      while(true) {
-        int recv_data = recv(data_socket, buffer, MAX_BUFF, 0);
-        fwrite(buffer, 1, recv_data, file);
-        if(recv_data == 0) {
-          break;
-        }
+
+      fprintf(fd, "125 Conexión ya abierta, comenzando transferencia\n");
+      char *buffer[MAX_BUFF];
+
+      fflush(fd);
+
+      while(1){
+        int b = recv(data_socket, buffer, MAX_BUFF,0);
+        fwrite (buffer,1,b,f);
+        if (b != MAX_BUFF){break;}
       }
-      fprintf(fd, "226 Transfer complete.\n");
-      fclose(file);
+
+      fprintf(fd,"226 Cerrando conexión\n");
+      fflush(fd);
+      fclose(f);
       close(data_socket);
+      fflush(fd);
     }
     else if (COMMAND("RETR")) {
       std::cout << "->"<< data_socket <<"<<-"<<std::endl;
