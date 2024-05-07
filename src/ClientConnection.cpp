@@ -126,20 +126,14 @@ void ClientConnection::WaitForRequests() {
       }
     }
     else if (COMMAND("PORT")) {
-      fscanf(fd, "%s", arg);
-      int i1, i2, i3, i4, p5, p6;
-      if (sscanf(arg, "%d,%d,%d,%d,%d,%d", &i1, &i2, &i3, &i4, &p5, &p6) != 6) {
-        fprintf(fd, "501 Syntax error in parameters or arguments.\n");
-      } else {
-        uint32_t address = (i1 << 24) | (i2 << 16) | (i3 << 8) | i4;
-        uint16_t port = (p5 << 8) | p6;
-        data_socket = connect_TCP(address, port);
-        if (data_socket == -1) {
-          fprintf(fd, "425 Can't open data connection.\n");
-        } else {
-          fprintf(fd, "200 PORT command successful.\n");
-        }
-      }
+        int h1,h2,h3,h4,p1,p2;
+        fscanf(fd,"%d,%d,%d,%d,%d,%d",&h1,&h2,&h3,&h4,&p1,&p2);
+        printf("(%d,%d,%d,%d,%d,%d)",h1,h2,h3,h4,p1,p2);
+        uint32_t address = h4 << 24 | h3 << 16 | h2 << 8 | h1;
+        uint16_t port = p1 << 8 | p2;
+        data_socket = connect_TCP(address,port);
+        fprintf(fd, "200 OK\n");
+        fflush(fd);
     }
     else if (COMMAND("PASV")) {
       struct sockaddr_in fsin;
@@ -174,24 +168,34 @@ void ClientConnection::WaitForRequests() {
       close(data_socket);
     }
     else if (COMMAND("RETR")) {
-      fscanf(fd, "%s", arg);
-      fd = fopen(arg, "r");
-      if(fd == NULL) {
-        fprintf(fd, "550 File not found.\n");
-      } else {
-        fprintf(fd, "150 File status okay; about to open data connection.\n");
-        while(true) {
-          char buffer[MAX_BUFF];
-          size_t bytes_read = fread(buffer, 1, MAX_BUFF, fd);
-          send(data_socket, buffer, bytes_read, 0);
-          if(bytes_read < MAX_BUFF) {
+      std::cout << "->"<< data_socket <<"<<-"<<std::endl;
+      fscanf(fd,"%s", arg);
+      FILE *f = fopen(arg, "r");
+      if (f != NULL) { 
+        fprintf(fd, "125 Established conection; making transference. \n");
+        fflush(fd);
+        char *buffer[MAX_BUFF];
+        while(1) {
+          int b= fread(buffer,1,MAX_BUFF,f);
+          std::cout << "--" << std::endl;
+          if (b == 0) {
             break;
           }
+          send(data_socket,buffer,b,0);
         }
-        fprintf(fd, "226 Transfer complete.\n");
-        fclose(fd);
+        
+        fprintf(fd, "226 Closing connection.\n");
+        fflush(fd);
+
         close(data_socket);
-      }
+        fclose(f);
+	    }
+	    else {
+        fprintf(fd, "425 Cant stablish connection.\n");
+        fflush(fd);
+
+        close(data_socket);
+	    }
     }
     else if (COMMAND("LIST")) {
       DIR *dir = opendir(".");	
@@ -199,6 +203,7 @@ void ClientConnection::WaitForRequests() {
       fprintf(fd, "150 Here comes the directory listing.\n");
       while( e = readdir(dir)) {
         send(data_socket, e->d_name, strlen(e->d_name), 0);
+        std::cout << "\n";
       }
       fprintf(fd, "226 Directory send OK.\n");
       closedir(dir);
