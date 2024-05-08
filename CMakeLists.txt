@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.1)
 
 project(hash_table_main
     VERSION 1.0
-    DESCRIPTION "hash_table_main"
+    DESCRIPTION "Sockets"
     LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 14)
@@ -24,3 +24,6 @@ set(SOURCES
 
 # Agregar el ejecutable
 add_executable(OUT ${SOURCES})
+
+# Enlazar con la biblioteca pthread
+target_link_libraries(OUT pthread)

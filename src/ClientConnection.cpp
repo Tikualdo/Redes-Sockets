@@ -220,12 +220,12 @@ void ClientConnection::WaitForRequests() {
 	    }
     }
     else if (COMMAND("LIST")) {
-      DIR *dir = opendir(".");	
+      DIR *dir = opendir("..");	
       struct dirent *e;
       fprintf(fd, "150 Here comes the directory listing.\n");
       while( e = readdir(dir)) {
         send(data_socket, e->d_name, strlen(e->d_name), 0);
-        std::cout << "\n";
+        send(data_socket, "\r\n", 2, 0);
       }
       fprintf(fd, "226 Directory send OK.\n");
       closedir(dir);
